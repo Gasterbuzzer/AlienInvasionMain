@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship, Heart
+from bullet import Bullet
 
 class AlienInvasion:
 	"""Overall class to manage game assets and behavior."""
@@ -20,6 +21,7 @@ class AlienInvasion:
 
 		self.Ship = Ship(self)
 		self.Heart = Heart(self)
+		self.bullets = pygame.sprite.Group()
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -27,6 +29,7 @@ class AlienInvasion:
 			self._check_events()
 			self._update_movement_player()
 			self._update_screen()
+			self.bullets.update()
 			
 
 	def _check_events(self):
