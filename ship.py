@@ -49,7 +49,7 @@ class Heart:
 		self.image = pygame.image.load("images/heart.bmp")
 		self.rect = self.image.get_rect()
 
-		#Start heart at center
+		# Start heart at center
 
 		self.rect.x = 275
 		self.rect.y = 100

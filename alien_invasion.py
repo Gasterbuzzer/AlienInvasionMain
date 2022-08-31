@@ -45,7 +45,7 @@ class AlienInvasion:
 	def _update_screen(self):
 		self.screen.fill(self.Settings.bg_color)
 		self.Ship.blitme()
-		#self.Heart.blitme()
+		# self.Heart.blitme()
 		# Make the most recently drawn screen visible
 		pygame.display.flip()
 
