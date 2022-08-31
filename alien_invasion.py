@@ -81,8 +81,10 @@ class AlienInvasion:
 			self.Ship.moving_left = False
 
 	def _fire_bullet(self):
-		new_bullet = Bullet(self)
-		self.bullets.add(new_bullet)
+		"""Create Bullets on top of Ship, maximum of three"""
+		if len(self.bullets) < self.Settings.bullets_allowed:
+			new_bullet = Bullet(self)
+			self.bullets.add(new_bullet)
 
 
 
