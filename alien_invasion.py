@@ -48,7 +48,7 @@ class AlienInvasion:
 		# self.Heart.blitme()
 		# Make the most recently drawn screen visible
 		for bullet in self.bullets.sprites():
-			bullet.draw_bullet()
+			bullet.draw_bullets()
 		pygame.display.flip()
 
 	def _update_movement_player(self):
