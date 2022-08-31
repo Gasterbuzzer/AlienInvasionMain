@@ -47,6 +47,8 @@ class AlienInvasion:
 		self.Ship.blitme()
 		# self.Heart.blitme()
 		# Make the most recently drawn screen visible
+		for bullet in self.bullets.sprites():
+			bullet.draw_bullet()
 		pygame.display.flip()
 
 	def _update_movement_player(self):
@@ -60,6 +62,8 @@ class AlienInvasion:
 			self.Ship.moving_left = True
 		elif event.key == pygame.K_q:
 			sys.exit()
+		elif event.key == pygame.K_SPACE:
+			self._fire_bullet()
 
 	def _check_keyup_events(self, event):
 		if event.key == pygame.K_RIGHT:
