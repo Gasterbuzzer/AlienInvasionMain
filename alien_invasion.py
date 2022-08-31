@@ -28,16 +28,7 @@ class AlienInvasion:
 		while True:
 			self._check_events()
 			self._update_movement_player()
-			self.bullets.update()
-
-			# Get rid of bullets when not visible.
-			for bullet in self.bullets.copy():
-				if bullet.rect.bottom <= 0:
-					self.bullets.remove(bullet)
-					print(len(self.bullets))
-
-
-
+			self._update_bullets()
 			self._update_screen()
 			
 
@@ -86,6 +77,16 @@ class AlienInvasion:
 			new_bullet = Bullet(self)
 			self.bullets.add(new_bullet)
 
+	def _update_bullets(self):
+		"""Update position of bullets and delete offscreen ones"""
+		# Update bullet positions.
+		self.bullets.update()
+
+		# Get rid of bullets when not visible.
+		for bullet in self.bullets.copy():
+			if bullet.rect.bottom <= 0:
+				self.bullets.remove(bullet)
+				print(len(self.bullets))
 
 
 if __name__ == "__main__":
