@@ -19,7 +19,7 @@ class Alien(Sprite):
 
 		self.x = float(self.rect.x)
 
-		self.Settings = Settings()
+		self.Settings = game.Settings
 
 	def update(self):
 		"""Move the alien to the right."""

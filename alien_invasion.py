@@ -119,9 +119,23 @@ class AlienInvasion:
 		alien.rect.x = alien.x
 		alien.rect.y = self.alien_height + ((2 * alien.rect.height) * row_number)
 		self.aliens.add(alien)
-		
+
 	def _update_aliens(self):
+		self._check_fleet_edges()
 		self.aliens.update()
+
+	def _check_fleet_edges(self):
+		"""Respond if any aliens have reached an edge."""
+		for alien in self.aliens.sprites():
+			if alien.check_edges():
+				self._change_fleet_direction()
+				break
+
+	def _change_fleet_direction(self):
+		"""Drop the entire fleet and change the fleet's direction."""
+		for alien in self.aliens.sprites():
+			alien.rect.y += self.Settings.fleet_drop_speed
+		self.Settings.fleet_direction *= -1
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
