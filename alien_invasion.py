@@ -21,14 +21,15 @@ class AlienInvasion:
 		pygame.display.set_caption("Alien Invasion")
 
 		self.Ship = Ship(self)
+		self.ship_height = self.Ship.rect.height
 		self.Heart = Heart(self)
 		self.bullets = pygame.sprite.Group()
 		self.aliens = pygame.sprite.Group()	
 
 		alien = Alien(self)
 		self.alien_width = alien.rect.width
-		self.avalable_space_x = self.Settings.screen_width - (2 * self.alien_width)
-		self.number_aliens_x = self.avalable_space_x // (2 * self.alien_width)
+		self.alien_height = alien.rect.height
+		
 
 		self._create_fleet()
 
@@ -102,14 +103,20 @@ class AlienInvasion:
 				print(len(self.bullets))
 
 	def _create_fleet(self):
+		self.avalable_space_x = self.Settings.screen_width - (2 * self.alien_width)
+		self.number_aliens_x = self.avalable_space_x // (2 * self.alien_width)
+		self.avalable_space_y = self.Settings.screen_height - (3 * self.alien_height) - self.ship_height
+		self.number_rows = self.avalable_space_y // (2 * self.alien_height)
 		# Create a row of aliens:
-		for alien_i in range(0, self.number_aliens_x):
-			self._create_alien(alien_i)
+		for row in range(0, self.number_rows):
+			for alien_i in range(0, self.number_aliens_x):
+				self._create_alien(alien_i, row)
 
-	def _create_alien(self, alien_number):
+	def _create_alien(self, alien_number, row_number):
 		alien = Alien(self)
 		alien.x = self.alien_width + ((2 * self.alien_width) * alien_number)
 		alien.rect.x = alien.x
+		alien.rect.y = self.alien_height + ((2 * alien.rect.height) * row_number)
 		self.aliens.add(alien)
 
 if __name__ == "__main__":
