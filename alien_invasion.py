@@ -197,7 +197,7 @@ class AlienInvasion:
 
 	def _check_play_button(self, mouse_pos):
 		if self.play_button.rect.collidepoint(mouse_pos):
-			self.stats.reset_stats()
+			self.Stats.reset_stats()
 			self.Stats.game_active = True
 			self.aliens.empty()
 			self.bullets.empty()
