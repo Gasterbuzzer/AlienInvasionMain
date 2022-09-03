@@ -69,6 +69,9 @@ class AlienInvasion:
 					self._check_keydown_events(event)
 				elif event.type == pygame.KEYUP:
 					self._check_keyup_events(event)
+				elif event.type == pygame.MOUSEBUTTONDOWN:
+					mouse_pos = pygame.mouse.get_pos()
+					self._check_play_button(mouse_pos)
 
 	def _update_screen(self):
 		self.screen.fill(self.Settings.bg_color)
@@ -191,6 +194,10 @@ class AlienInvasion:
 			if alien.rect.bottom >= screen_rect.bottom:
 				self._ship_hit()
 				break
+
+	def _check_play_button(self, mouse_pos):
+		if self.play_button.rect.collidepoint(mouse_pos):
+			self.Stats.game_active = True
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
