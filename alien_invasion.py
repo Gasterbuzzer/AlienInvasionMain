@@ -97,6 +97,8 @@ class AlienInvasion:
 			sys.exit()
 		elif event.key == pygame.K_SPACE:
 			self._fire_bullet()
+		elif event.key == pygame.K_p and not self.Stats.game_active:
+			self._start_game()
 
 	def _check_keyup_events(self, event):
 		if event.key == pygame.K_RIGHT:
@@ -196,17 +198,20 @@ class AlienInvasion:
 				self._ship_hit()
 				break
 
+	def _start_game(self):
+		self.Stats.reset_stats()
+		self.Stats.game_active = True
+		self.aliens.empty()
+		self.bullets.empty()
+
+		self._create_fleet()
+		self.Ship.center_ship()
+		pygame.mouse.set_visible(False)
+
 	def _check_play_button(self, mouse_pos):
 		button_clicked = self.play_button.rect.collidepoint(mouse_pos)
 		if button_clicked and not self.Stats.game_active:
-			self.Stats.reset_stats()
-			self.Stats.game_active = True
-			self.aliens.empty()
-			self.bullets.empty()
-
-			self._create_fleet()
-			self.Ship.center_ship()
-			pygame.mouse.set_visible(False)
+			self._start_game()
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
