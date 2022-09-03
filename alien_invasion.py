@@ -186,6 +186,7 @@ class AlienInvasion:
 			sleep(0.5)
 		else:
 			self.Stats.game_active = False
+			pygame.mouse.set_visible(True)
 
 	def _check_alien_bottom(self):
 		"""Check if alien hits bottom if screen."""
@@ -205,6 +206,7 @@ class AlienInvasion:
 
 			self._create_fleet()
 			self.Ship.center_ship()
+			pygame.mouse.set_visible(False)
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
