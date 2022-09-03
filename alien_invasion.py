@@ -96,17 +96,30 @@ class AlienInvasion:
 		"""Update position of bullets and delete offscreen ones"""
 		# Update bullet positions.
 		self.bullets.update()
-
+		
 		# Get rid of bullets when not visible.
 		for bullet in self.bullets.copy():
 			if bullet.rect.bottom <= 0:
 				self.bullets.remove(bullet)
 				print(len(self.bullets))
 
+		self._check_collion_bullet_alien()
+
+
+	def _check_collion_bullet_alien(self):
+		# Check for collision if bullets hit aliens.
+		dcollisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+		if not self.aliens:
+			# Destroy all bullets and create a new fleet.
+			self.bullets.empty()
+			self._create_fleet()
+
+
 	def _create_fleet(self):
-		self.avalable_space_x = self.Settings.screen_width - (2 * self.alien_width)
+		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
 		self.number_aliens_x = self.avalable_space_x // (2 * self.alien_width)
-		self.avalable_space_y = self.Settings.screen_height - (3 * self.alien_height) - self.ship_height
+		self.avalable_space_y = self.Settings.screen_height - (4 * self.alien_height) - self.ship_height
 		self.number_rows = self.avalable_space_y // (2 * self.alien_height)
 		# Create a row of aliens:
 		for row in range(0, self.number_rows):
