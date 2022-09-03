@@ -8,6 +8,7 @@ from ship import Ship, Heart
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
+from button import Button
 
 class AlienInvasion:
 	"""Overall class to manage game assets and behavior."""
@@ -36,17 +37,27 @@ class AlienInvasion:
 		self.alien_height = alien.rect.height
 
 		self._create_fleet()
+		self.play_button = Button(self, "Play")
 
 	def run_game(self):
 		"""Start the main loop for the game."""
 		while True:
 			self._check_events()
 
+
+
 			if self.Stats.game_active:
 				self._update_movement_player()
 				self._update_bullets()
 				self._update_aliens()
+
 			self._update_screen()
+
+			if not self.Stats.game_active:
+				self.play_button.draw_button()
+
+
+			pygame.display.flip()
 			
 
 	def _check_events(self):
@@ -69,8 +80,6 @@ class AlienInvasion:
 			bullet.draw_bullets()
 
 		self.aliens.draw(self.screen)
-
-		pygame.display.flip()
 
 	def _update_movement_player(self):
 		self.Ship.update_pos()
