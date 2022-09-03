@@ -36,9 +36,6 @@ class Ship:
 		"""Draw the ship at its current location."""
 		self.screen.blit(self.image, self.rect)
 
-
-
-
 class Heart:
 	"""A class to manage a heart."""
 	def __init__(self, ai_game):

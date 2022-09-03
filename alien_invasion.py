@@ -29,7 +29,6 @@ class AlienInvasion:
 		alien = Alien(self)
 		self.alien_width = alien.rect.width
 		self.alien_height = alien.rect.height
-		
 
 		self._create_fleet()
 
@@ -105,7 +104,6 @@ class AlienInvasion:
 
 		self._check_collion_bullet_alien()
 
-
 	def _check_collion_bullet_alien(self):
 		# Check for collision if bullets hit aliens.
 		dcollisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
@@ -114,7 +112,6 @@ class AlienInvasion:
 			# Destroy all bullets and create a new fleet.
 			self.bullets.empty()
 			self._create_fleet()
-
 
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
