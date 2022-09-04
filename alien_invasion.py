@@ -146,6 +146,10 @@ class AlienInvasion:
 			self._create_fleet()
 			self.Settings.increase_speed()
 
+		if collisions:
+			self.Stats.score += self.Settings.alien_points
+			self.sb.prep_score()
+
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
 		self.number_aliens_x = self.avalable_space_x // (2 * self.alien_width)
@@ -222,6 +226,7 @@ class AlienInvasion:
 
 		self._create_fleet()
 		self.Ship.center_ship()
+		self.sb.prep_score()
 		pygame.mouse.set_visible(False)
 
 	def _check_play_button(self, mouse_pos):

@@ -28,11 +28,14 @@ class Settings:
 		self.SHIP_SPEED_DEFAULT = 1.5
 		self.BULLET_SPEED_DEFAULT = 1.7
 		self.ALIEN_SPEED_DEFAULT = 0.5
+		self.ALIEN_POINTS_DEFAULT = 50
 
 	def initialize_dynamic_settings(self):
 		self.level = 1
 		self.ship_speed = 1.5
 		self.bullet_speed = 1.7
+
+		self.alien_points = 50
 
 		#Alien Stuff
 		self.alien_speed = 0.5
