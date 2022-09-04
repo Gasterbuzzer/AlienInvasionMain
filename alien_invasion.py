@@ -207,8 +207,8 @@ class AlienInvasion:
 				break
 
 	def _start_game(self):
+		self.Stats.reset_stats()
 		if self.Settings.level == 1:
-			self.Stats.reset_stats()
 			self.Settings.initialize_dynamic_settings()
 			#print(f"Level Reset: {self.Settings.level}")
 		self.Stats.game_active = True
