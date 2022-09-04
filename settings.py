@@ -20,6 +20,7 @@ class Settings:
 
 		# How quickly the game speeds up.
 		self.speedup_scale = 1.3
+		self.score_scale = 1.5
 		self.fleet_drop_speed = 7 # Original value: 7
 
 		self.initialize_dynamic_settings()
@@ -48,7 +49,11 @@ class Settings:
 		self.ship_speed *= self.speedup_scale
 		self.bullet_speed *= self.speedup_scale
 		self.alien_speed = self.alien_speed * self.speedup_scale
+
+		self.alien_points = int(self.alien_points * self.score_scale)
+
 		self.level += 1
+		#print(f"New level! Level {self.level} now has {self.alien_points} points for aliens!")
 
 	def increase_level(self):
 		self.level += 1
@@ -58,11 +63,13 @@ class Settings:
 		self.bullet_speed = self.BULLET_SPEED_DEFAULT
 		self.alien_speed = self.ALIEN_SPEED_DEFAULT
 		self.fleet_direction = 1
+		self.alien_points = self.ALIEN_POINTS_DEFAULT
 
 		for number in range(0, self.level):
 			self.ship_speed *= self.speedup_scale
 			self.bullet_speed *= self.speedup_scale
 			self.alien_speed *= self.speedup_scale
+			self.alien_points = int(self.alien_points * self.score_scale)
 
 	def decrease_level(self):
 		self.level -= 1
@@ -72,8 +79,10 @@ class Settings:
 		self.bullet_speed = self.BULLET_SPEED_DEFAULT
 		self.alien_speed = self.ALIEN_SPEED_DEFAULT
 		self.fleet_direction = 1
+		self.alien_points = self.ALIEN_POINTS_DEFAULT
 
 		for number in range(0, self.level):
 			self.ship_speed *= self.speedup_scale
 			self.bullet_speed *= self.speedup_scale
 			self.alien_speed *= self.speedup_scale
+			self.alien_points = int(self.alien_points * self.score_scale)

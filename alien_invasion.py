@@ -37,7 +37,7 @@ class AlienInvasion:
 		self.alien_width = alien.rect.width
 		self.alien_height = alien.rect.height
 
-		self._create_fleet()
+		
 		self.play_button = Button(self, "Play")
 		self.increase_difficulty_button = Button(self, "+Difficulty")
 		self.increase_difficulty_button.move_button(250, -30)
@@ -49,6 +49,7 @@ class AlienInvasion:
 
 	def run_game(self):
 		"""Start the main loop for the game."""
+		self._create_fleet()
 		while True:
 			self._check_events()
 
@@ -147,8 +148,9 @@ class AlienInvasion:
 			self.Settings.increase_speed()
 
 		if collisions:
-			self.Stats.score += self.Settings.alien_points
-			self.sb.prep_score()
+			for aliens in collisions.values():
+				self.Stats.score += self.Settings.alien_points * len(aliens)
+				self.sb.prep_score()
 
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
