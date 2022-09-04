@@ -16,7 +16,8 @@ class Scoreboard:
 
 	def prep_score(self):
 		"""Turn the score into a rendered image."""
-		score_str = str(self.Stats.score)
+		rounded_score = round(self.stats.score, -1)
+		score_str = "{:,}".format(rounded_score)
 		self.score_image = self.font.render(score_str, True, self.text_color, self.Settings.bg_color)
 
 		# Display the score at the top right of the screen. The true statement is for antialisasing.
