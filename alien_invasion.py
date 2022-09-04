@@ -197,6 +197,7 @@ class AlienInvasion:
 		# Decrement ships left.
 		if self.Stats.ships_left > 0:
 			self.Stats.ships_left -= 1
+			self.sb.prep_ships()
 
 			self.aliens.empty()
 			self.bullets.empty()
@@ -239,6 +240,7 @@ class AlienInvasion:
 		if button_clicked and not self.Stats.game_active:
 			self._start_game()
 			self.sb.prep_level()
+			self.sb.prep_ships()
 			print("Start pressed.")
 			print(f"Level: {self.Settings.level}")
 		if button_clicked_i_d and not self.Stats.game_active:
