@@ -9,6 +9,7 @@ from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 class AlienInvasion:
 	"""Overall class to manage game assets and behavior."""
@@ -42,6 +43,9 @@ class AlienInvasion:
 		self.increase_difficulty_button.move_button(250, -30)
 		self.decrease_difficulty_button = Button(self, "-Difficulty")
 		self.decrease_difficulty_button.move_button(250, 30)
+
+		self.sb = Scoreboard(self)
+
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -89,6 +93,7 @@ class AlienInvasion:
 			bullet.draw_bullets()
 
 		self.aliens.draw(self.screen)
+		self.sb.show_score()
 
 	def _update_movement_player(self):
 		self.Ship.update_pos()
