@@ -1,13 +1,15 @@
 class Settings:
 	"""A class to store all settings for Alien Invasion."""
 
-	def __init__(self):
+	def __init__(self, game):
 		"""Initialize the game's settings."""
 
 		# Screen Settings
 		self.screen_width = 1200
 		self.screen_height = 800
 		self.bg_color = (230, 230, 230)
+
+		self.game = game
 
 		# Ship Settings
 		self.ship_limit = 3
@@ -53,10 +55,12 @@ class Settings:
 		self.alien_points = int(self.alien_points * self.score_scale)
 
 		self.level += 1
+		self.game.sb.prep_level()
 		#print(f"New level! Level {self.level} now has {self.alien_points} points for aliens!")
 
 	def increase_level(self):
 		self.level += 1
+		self.game.sb.prep_level()
 
 		# Default values for calculations
 		self.ship_speed = self.SHIP_SPEED_DEFAULT
@@ -73,6 +77,7 @@ class Settings:
 
 	def decrease_level(self):
 		self.level -= 1
+		self.game.sb.prep_level()
 
 		# Default values for calculations
 		self.ship_speed = self.SHIP_SPEED_DEFAULT

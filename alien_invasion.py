@@ -17,7 +17,7 @@ class AlienInvasion:
 	def __init__(self):
 		"""Initialize the game, and create game resources."""
 		pygame.init()
-		self.Settings = Settings()
+		self.Settings = Settings(self)
 
 		self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 		self.Settings.screen_width = self.screen.get_rect().width
@@ -238,6 +238,7 @@ class AlienInvasion:
 		button_clicked_d_d = self.decrease_difficulty_button.rect.collidepoint(mouse_pos)
 		if button_clicked and not self.Stats.game_active:
 			self._start_game()
+			self.sb.prep_level()
 			print("Start pressed.")
 			print(f"Level: {self.Settings.level}")
 		if button_clicked_i_d and not self.Stats.game_active:
