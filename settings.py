@@ -10,18 +10,67 @@ class Settings:
 		self.bg_color = (230, 230, 230)
 
 		# Ship Settings
-		self.ship_speed = 1.5
 		self.ship_limit = 3
 
 		# Bullet Settings
-		self.bullet_speed = 1.7
 		self.bullet_width = 3
 		self.bullet_height = 15
 		self.bullet_color = (60, 60, 60)
 		self.bullets_allowed = 3
 
+		# How quickly the game speeds up.
+		self.speedup_scale = 1.3
+		self.fleet_drop_speed = 7 # Original value: 7
+
+		self.initialize_dynamic_settings()
+
+		self.LEVEL_DEFAULT = 1
+		self.SHIP_SPEED_DEFAULT = 1.5
+		self.BULLET_SPEED_DEFAULT = 1.7
+		self.ALIEN_SPEED_DEFAULT = 0.5
+
+	def initialize_dynamic_settings(self):
+		self.level = 1
+		self.ship_speed = 1.5
+		self.bullet_speed = 1.7
+
 		#Alien Stuff
 		self.alien_speed = 0.5
-		self.fleet_drop_speed = 7 # Original value: 7
+
 		# fleet_direction of 1 represents right; -1 represents left.
 		self.fleet_direction = 1
+
+	def increase_speed(self):
+		"""Increase speed settings."""
+		self.ship_speed *= self.speedup_scale
+		self.bullet_speed *= self.speedup_scale
+		self.alien_speed = self.alien_speed * self.speedup_scale
+		self.level += 1
+
+	def increase_level(self):
+		self.level += 1
+
+		# Default values for calculations
+		self.ship_speed = self.SHIP_SPEED_DEFAULT
+		self.bullet_speed = self.BULLET_SPEED_DEFAULT
+		self.alien_speed = self.ALIEN_SPEED_DEFAULT
+		self.fleet_direction = 1
+
+		for number in range(0, self.level):
+			self.ship_speed *= self.speedup_scale
+			self.bullet_speed *= self.speedup_scale
+			self.alien_speed *= self.speedup_scale
+
+	def decrease_level(self):
+		self.level -= 1
+
+		# Default values for calculations
+		self.ship_speed = self.SHIP_SPEED_DEFAULT
+		self.bullet_speed = self.BULLET_SPEED_DEFAULT
+		self.alien_speed = self.ALIEN_SPEED_DEFAULT
+		self.fleet_direction = 1
+
+		for number in range(0, self.level):
+			self.ship_speed *= self.speedup_scale
+			self.bullet_speed *= self.speedup_scale
+			self.alien_speed *= self.speedup_scale

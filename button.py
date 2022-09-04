@@ -26,3 +26,9 @@ class Button:
 	def draw_button(self):
 		self.screen.fill(self.button_color, self.rect)
 		self.screen.blit(self.msg_image, self.msg_image_rect)
+
+	def move_button(self, x, y):
+		self.rect.x += x
+		self.rect.y += y
+		self.msg_image_rect.x += x
+		self.msg_image_rect.y += y

@@ -38,6 +38,10 @@ class AlienInvasion:
 
 		self._create_fleet()
 		self.play_button = Button(self, "Play")
+		self.increase_difficulty_button = Button(self, "+Difficulty")
+		self.increase_difficulty_button.move_button(250, -30)
+		self.decrease_difficulty_button = Button(self, "-Difficulty")
+		self.decrease_difficulty_button.move_button(250, 30)
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -55,6 +59,8 @@ class AlienInvasion:
 
 			if not self.Stats.game_active:
 				self.play_button.draw_button()
+				self.increase_difficulty_button.draw_button()
+				self.decrease_difficulty_button.draw_button()
 
 
 			pygame.display.flip()
@@ -95,7 +101,7 @@ class AlienInvasion:
 			self.Ship.moving_left = True
 		elif event.key == pygame.K_q:
 			sys.exit()
-		elif event.key == pygame.K_SPACE:
+		elif event.key == pygame.K_SPACE and self.Stats.game_active:
 			self._fire_bullet()
 		elif event.key == pygame.K_p and not self.Stats.game_active:
 			self._start_game()
@@ -121,7 +127,7 @@ class AlienInvasion:
 		for bullet in self.bullets.copy():
 			if bullet.rect.bottom <= 0:
 				self.bullets.remove(bullet)
-				print(len(self.bullets))
+				#print(len(self.bullets))
 
 		self._check_collion_bullet_alien()
 
@@ -133,6 +139,7 @@ class AlienInvasion:
 			# Destroy all bullets and create a new fleet.
 			self.bullets.empty()
 			self._create_fleet()
+			self.Settings.increase_speed()
 
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
@@ -188,6 +195,7 @@ class AlienInvasion:
 			sleep(0.5)
 		else:
 			self.Stats.game_active = False
+			self.Settings.level = 1
 			pygame.mouse.set_visible(True)
 
 	def _check_alien_bottom(self):
@@ -199,7 +207,10 @@ class AlienInvasion:
 				break
 
 	def _start_game(self):
-		self.Stats.reset_stats()
+		if self.Settings.level == 1:
+			self.Stats.reset_stats()
+			self.Settings.initialize_dynamic_settings()
+			#print(f"Level Reset: {self.Settings.level}")
 		self.Stats.game_active = True
 		self.aliens.empty()
 		self.bullets.empty()
@@ -210,8 +221,19 @@ class AlienInvasion:
 
 	def _check_play_button(self, mouse_pos):
 		button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+		button_clicked_i_d = self.increase_difficulty_button.rect.collidepoint(mouse_pos)
+		button_clicked_d_d = self.decrease_difficulty_button.rect.collidepoint(mouse_pos)
 		if button_clicked and not self.Stats.game_active:
 			self._start_game()
+			print("Start pressed.")
+			print(f"Level: {self.Settings.level}")
+		if button_clicked_i_d and not self.Stats.game_active:
+			self.Settings.increase_level()
+			print("Level up pressed.")
+			print(f"Level: {self.Settings.level}")
+		if button_clicked_d_d and not self.Stats.game_active:
+			self.Settings.decrease_level()
+			print("Level down pressed.")
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
