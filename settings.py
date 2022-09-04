@@ -19,7 +19,7 @@ class Settings:
 		self.bullets_allowed = 3
 
 		# How quickly the game speeds up.
-		self.speedup_scale = 1.3
+		self.speedup_scale = 1.2
 		self.score_scale = 1.5
 		self.fleet_drop_speed = 7 # Original value: 7
 

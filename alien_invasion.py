@@ -151,6 +151,7 @@ class AlienInvasion:
 			for aliens in collisions.values():
 				self.Stats.score += self.Settings.alien_points * len(aliens)
 				self.sb.prep_score()
+				self.sb.check_high_score()
 
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
