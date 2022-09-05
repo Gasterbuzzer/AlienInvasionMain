@@ -244,6 +244,7 @@ class AlienInvasion:
 		if self.Stats.ships_left > 0:
 			self.Stats.ships_left -= 1
 			self.sb.prep_ships()
+			self.powerups.empty()
 
 			self.aliens.empty()
 			self.bullets.empty()
@@ -255,6 +256,7 @@ class AlienInvasion:
 		else:
 			self.Stats.game_active = False
 			self.Settings.level = 1
+			self.powerups.empty()
 			pygame.mouse.set_visible(True)
 
 	def _check_alien_bottom(self):
@@ -329,8 +331,6 @@ class AlienInvasion:
 		self.later_s = pygame.time.get_ticks() + 5_000
 
 		self.Settings.bullet_width = 300
-		for bullet in self.bullets:
-			self.bullet.update_bullet()
 		self.powerup_active = True
 
 	def _check_if_powerup_over(self):
