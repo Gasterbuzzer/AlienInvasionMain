@@ -1,5 +1,6 @@
 import sys
 from time import sleep
+import json
 
 import pygame
 
@@ -46,6 +47,8 @@ class AlienInvasion:
 
 		self.sb = Scoreboard(self)
 
+		self.load_highscore_file()
+
 
 	def run_game(self):
 		"""Start the main loop for the game."""
@@ -70,12 +73,33 @@ class AlienInvasion:
 
 			pygame.display.flip()
 			
+	def load_highscore_file(self):
+		try:
+			with open("save.json", "r") as f:
+				highscore = json.load(f)
+				print("Save file loaded.")
+		except FileNotFoundError:
+			print("Error Loading Highscore: No save file found.")
+		except json.decoder.JSONDecodeError:
+			print("Error loading file: Save file is empty. Ignoring...")
+		else:
+			self.Stats.high_score = highscore
+			self.sb.prep_high_score()
+			print(f"Highscore applied as {self.Stats.high_score}.")
+
+	def save_highscore_file(self):
+		try:
+			with open("save.json", "w") as f:
+				json.dump(self.Stats.high_score, f)
+				print(f"Saved highscore as {self.Stats.high_score}.")
+		except FileNotFoundError:
+			print("Error Loading Highscore: No save file found.")
 
 	def _check_events(self):
 		"""Watch for keyboard and mouse events."""
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
-					sys.exit()
+					self._close_game()
 				elif event.type == pygame.KEYDOWN:
 					self._check_keydown_events(event)
 				elif event.type == pygame.KEYUP:
@@ -106,7 +130,7 @@ class AlienInvasion:
 		elif event.key == pygame.K_LEFT:
 			self.Ship.moving_left = True
 		elif event.key == pygame.K_q:
-			sys.exit()
+			self._close_game()
 		elif event.key == pygame.K_SPACE and self.Stats.game_active:
 			self._fire_bullet()
 		elif event.key == pygame.K_p and not self.Stats.game_active:
@@ -250,6 +274,10 @@ class AlienInvasion:
 		if button_clicked_d_d and not self.Stats.game_active:
 			self.Settings.decrease_level()
 			print("Level down pressed.")
+
+	def _close_game(self):
+		self.save_highscore_file()
+		sys.exit()
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
