@@ -26,3 +26,6 @@ class Bullet(Sprite):
 
 	def draw_bullets(self):
 		pygame.draw.rect(self.screen, self.color, self.rect)
+
+	def update_bullet(self):
+		self.rect = pygame.Rect(0, 0, self.Settings.bullet_width, self.Settings.bullet_height)

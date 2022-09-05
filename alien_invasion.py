@@ -1,6 +1,7 @@
 import sys
 from time import sleep
 import json
+from random import randint
 
 import pygame
 
@@ -11,6 +12,7 @@ from alien import Alien
 from game_stats import GameStats
 from button import Button
 from scoreboard import Scoreboard
+from powerup import Powerup
 
 class AlienInvasion:
 	"""Overall class to manage game assets and behavior."""
@@ -33,6 +35,7 @@ class AlienInvasion:
 		self.Heart = Heart(self)
 		self.bullets = pygame.sprite.Group()
 		self.aliens = pygame.sprite.Group()	
+		self.powerups = pygame.sprite.Group()
 
 		alien = Alien(self)
 		self.alien_width = alien.rect.width
@@ -46,16 +49,26 @@ class AlienInvasion:
 
 		self.load_highscore_file()
 
+		self.last = pygame.time.get_ticks()
+		self.now = pygame.time.get_ticks()
+		self.cooldown_difference = self.now - self.last
+		self.now_s = pygame.time.get_ticks()
+		self.later_s = pygame.time.get_ticks() + 5_000
+		self.powerup_active = False
 
 	def run_game(self):
 		"""Start the main loop for the game."""
 		
 		while True:
 			self._check_events()
+
 			if self.Stats.game_active:
+				self._spawn_powerup()
 				self._update_movement_player()
 				self._update_bullets()
 				self._update_aliens()
+				self._update_pos_powerup()
+				self._check_if_powerup_over()
 
 			self._update_screen()
 
@@ -63,6 +76,7 @@ class AlienInvasion:
 				self.play_button.draw_button()
 				self.increase_difficulty_button.draw_button()
 				self.decrease_difficulty_button.draw_button()
+
 
 			pygame.display.flip()
 			
@@ -117,6 +131,7 @@ class AlienInvasion:
 			bullet.draw_bullets()
 
 		self.aliens.draw(self.screen)
+		self.powerups.draw(self.screen)
 		self.sb.show_score()
 
 	def _update_movement_player(self):
@@ -134,6 +149,11 @@ class AlienInvasion:
 			self._fire_bullet()
 		elif event.key == pygame.K_p and not self.Stats.game_active:
 			self._start_game()
+		elif event.key == pygame.K_l:
+			self._spawn_powerup()
+			print(f"Current Time: {self.now_s} and future time {self.later_s}")
+		elif event.key == pygame.K_n:
+			print(f"Cooldown: {self.cooldown_difference} Current Time: {pygame.time.get_ticks()}")
 
 	def _check_keyup_events(self, event):
 		if event.key == pygame.K_RIGHT:
@@ -281,6 +301,43 @@ class AlienInvasion:
 	def _close_game(self):
 		self.save_highscore_file()
 		sys.exit()
+
+	def _update_pos_powerup(self):
+		self.powerups.update()
+		for powerup in self.powerups.sprites():
+			if powerup.check_top():
+				self.powerups.remove(powerup)
+
+		if pygame.sprite.spritecollideany(self.Ship, self.powerups):
+			self.powerups.empty()
+			self._shotgun_active()
+
+	def _spawn_powerup(self):
+		self.now = pygame.time.get_ticks()
+
+		self.cooldown_difference = self.now - self.last
+
+		if self.cooldown_difference >= 10_000:
+			powerup = Powerup(self)
+			powerup.rect.y = 0
+			powerup.rect.x = randint(0, self.screen_rect.right)
+			self.powerups.add(powerup)
+			self.last = pygame.time.get_ticks()
+
+	def _shotgun_active(self):
+		self.now_s = pygame.time.get_ticks()
+		self.later_s = pygame.time.get_ticks() + 5_000
+
+		self.Settings.bullet_width = 300
+		for bullet in self.bullets:
+			self.bullet.update_bullet()
+		self.powerup_active = True
+
+	def _check_if_powerup_over(self):
+		self.now_s = pygame.time.get_ticks()
+		if self.now_s > self.later_s and self.powerup_active:
+			self.Settings.bullet_width = 3
+			self.powerup_active = False
 
 if __name__ == "__main__":
 	# Make a game instance, and run the game.
