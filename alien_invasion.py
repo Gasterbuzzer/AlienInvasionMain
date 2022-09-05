@@ -40,10 +40,7 @@ class AlienInvasion:
 
 		
 		self.play_button = Button(self, "Play")
-		self.increase_difficulty_button = Button(self, "+Difficulty")
-		self.increase_difficulty_button.move_button(250, -30)
-		self.decrease_difficulty_button = Button(self, "-Difficulty")
-		self.decrease_difficulty_button.move_button(250, 30)
+		self._create_buttons()
 
 		self.sb = Scoreboard(self)
 
@@ -52,12 +49,9 @@ class AlienInvasion:
 
 	def run_game(self):
 		"""Start the main loop for the game."""
-		self._create_fleet()
+		
 		while True:
 			self._check_events()
-
-
-
 			if self.Stats.game_active:
 				self._update_movement_player()
 				self._update_bullets()
@@ -70,9 +64,14 @@ class AlienInvasion:
 				self.increase_difficulty_button.draw_button()
 				self.decrease_difficulty_button.draw_button()
 
-
 			pygame.display.flip()
 			
+	def _create_buttons(self):
+		self.increase_difficulty_button = Button(self, "+Difficulty")
+		self.increase_difficulty_button.move_button(250, -30)
+		self.decrease_difficulty_button = Button(self, "-Difficulty")
+		self.decrease_difficulty_button.move_button(250, 30)
+
 	def load_highscore_file(self):
 		try:
 			with open("save.json", "r") as f:
@@ -167,15 +166,18 @@ class AlienInvasion:
 
 		if not self.aliens:
 			# Destroy all bullets and create a new fleet.
-			self.bullets.empty()
-			self._create_fleet()
-			self.Settings.increase_speed()
+			self._new_level()
 
 		if collisions:
 			for aliens in collisions.values():
 				self.Stats.score += self.Settings.alien_points * len(aliens)
 				self.sb.prep_score()
 				self.sb.check_high_score()
+
+	def _new_level(self):
+		self.bullets.empty()
+		self._create_fleet()
+		self.Settings.increase_speed()
 
 	def _create_fleet(self):
 		self.avalable_space_x = self.Settings.screen_width - (4 * self.alien_width)
@@ -266,7 +268,8 @@ class AlienInvasion:
 			self.sb.prep_level()
 			self.sb.prep_ships()
 			print("Start pressed.")
-			print(f"Level: {self.Settings.level}")
+			print(f"Level: {self.Settings.level}.")
+			self._create_fleet()
 		if button_clicked_i_d and not self.Stats.game_active:
 			self.Settings.increase_level()
 			print("Level up pressed.")
